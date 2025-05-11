@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Ronangr1, All rights reserved.
+ * See LICENSE bundled with this library for license details.
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <settings>
+    <buttons>
+        <button name="import">
+            <url path="cmsimportexport/block/import"/>
+            <class>secondary</class>
+            <label translate="true">Import Blocks</label>
+        </button>
+    </buttons>
+    </settings>
+</listing>

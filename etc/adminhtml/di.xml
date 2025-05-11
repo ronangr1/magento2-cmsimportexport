@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Ronangr1, All rights reserved.
+ * See LICENSE bundled with this library for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Page\Export">
+        <arguments>
+            <argument name="exporter" xsi:type="object">Ronangr1\CmsImportExport\Model\Export\PageExport</argument>
+        </arguments>
+    </type>
+    <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Block\Export">
+        <arguments>
+            <argument name="exporter" xsi:type="object">Ronangr1\CmsImportExport\Model\Export\BlockExport</argument>
+        </arguments>
+    </type>
+    <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Ajax\Import">
+        <arguments>
+            <argument name="importer" xsi:type="object">Ronangr1\CmsImportExport\Model\Importer</argument>
+        </arguments>
+    </type>
+    <type name="Ronangr1\CmsImportExport\Model\Exporter">
+        <arguments>
+            <argument name="zip" xsi:type="object">Ronangr1\CmsImportExport\Model\Archive\Zip</argument>
+        </arguments>
+    </type>
+    <type name="Ronangr1\CmsImportExport\Model\Importer">
+        <arguments>
+            <argument name="zip" xsi:type="object">Ronangr1\CmsImportExport\Model\Archive\Zip</argument>
+        </arguments>
+    </type>
+</config>
+
+

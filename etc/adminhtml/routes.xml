@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Copyright © Ronangr1 All rights reserved.
+ * See LICENCE file for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:App/etc/routes.xsd">
+    <router id="admin">
+        <route frontName="cmsimportexport" id="cmsimportexport">
+            <module name="Ronangr1_CmsImportExport"/>
+        </route>
+    </router>
+</config>
