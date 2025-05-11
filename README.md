@@ -1,7 +1,7 @@
 # Module for Magento 2
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport)
-[![License: MIT](https://img.shields.io/github/license/ronangr1/m2-humanstxt.svg?style=flat-square)](./LICENSE)
+[![License: MIT](https://img.shields.io/github/license/ronangr1/m2-cmsimportexport.svg?style=flat-square)](./LICENSE)
 [![Packagist](https://img.shields.io/packagist/dt/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 [![Packagist](https://img.shields.io/packagist/dm/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 
