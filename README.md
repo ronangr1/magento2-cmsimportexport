@@ -5,7 +5,7 @@
 [![Packagist](https://img.shields.io/packagist/dt/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 [![Packagist](https://img.shields.io/packagist/dm/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 
-This module enables you to add a humans.txt to your Magento 2 application.
+This module enables you to import and export your CMS content on Magento 2
 
 - [Setup](#setup)
     - [Composer installation](#composer-installation)
