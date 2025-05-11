@@ -19,7 +19,7 @@ class Zip extends MagentoZip
     {
         $zip = new ZipArchive();
         if ($zip->open($destination, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            throw new \RuntimeException(sprintf('Unable to create %s to zip', $destination));
+            throw new \RuntimeException(sprintf('Unable to create %s to archive', $destination));
         }
 
         if (is_dir($source)) {

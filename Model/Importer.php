@@ -21,8 +21,6 @@ use Magento\Framework\Filesystem\Io\File as IoFile;
 
 class Importer implements ImporterInterface
 {
-    private $buildEntityFromRow;
-
     public function __construct(
         private readonly PageFactory $pageFactory,
         private readonly BlockFactory $blockFactory,
@@ -57,7 +55,7 @@ class Importer implements ImporterInterface
         }
 
         $all = glob($importDir . '/*.csv');
-        $csvFiles = array_filter($all, function($path) {
+        $csvFiles = array_filter($all, function ($path) {
             return is_file($path) && is_readable($path);
         });
         if (empty($csvFiles)) {
@@ -91,7 +89,7 @@ class Importer implements ImporterInterface
         }
 
         $headers = fgetcsv($h);
-        $data    = fgetcsv($h);
+        $data = fgetcsv($h);
         fclose($h);
 
         if (!$data || count($headers) !== count($data)) {
@@ -145,8 +143,9 @@ class Importer implements ImporterInterface
         ];
 
         if (!isset($config[$type])) {
-            throw new \InvalidArgumentException("Type inconnu « $type »");
+            throw new \InvalidArgumentException(sprintf('Unknown type: %s', $type));
         }
+
         $c = $config[$type];
         $entity = $c['loader']($row);
 
@@ -204,12 +203,12 @@ class Importer implements ImporterInterface
             'cms_block' => fn($e) => $this->blockRepository->save($e),
         ];
         if (!isset($config[$type])) {
-            throw new \InvalidArgumentException("Type inconnu « $type »");
+            throw new \InvalidArgumentException(sprintf('Unknown entity type: %s', $type));
         }
         try {
             $config[$type]($entity);
         } catch (LocalizedException $e) {
-            throw new \RuntimeException("Unable to save $type: " . $e->getMessage());
+            throw new \RuntimeException(sprintf('Failed to save entity: %s', $e->getMessage()));
         }
     }
 }

@@ -19,6 +19,7 @@ class Config
 
     public function addMedia(): true
     {
+        /** @TODO Create system config */
         return true;
     }
 }

@@ -12,14 +12,10 @@ use Magento\Framework\View\Element\UiComponent\Context;
 
 class ExportButton implements ButtonProviderInterface
 {
-    /**
-     * @var Context
-     */
-    private $context;
-
-    public function __construct(Context $context)
+    public function __construct(
+        private readonly Context $context
+    )
     {
-        $this->context = $context;
     }
 
     public function getButtonData(): array
