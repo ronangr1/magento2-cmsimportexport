@@ -14,7 +14,7 @@ use Ronangr1\CmsImportExport\Api\ExporterInterface;
 
 abstract class Exporter extends Action
 {
-    public const string ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::export';
+    public const ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::export';
 
     protected string $type = "cms_default";
 

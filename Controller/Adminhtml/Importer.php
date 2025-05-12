@@ -13,7 +13,7 @@ use Magento\Framework\Controller\ResultFactory;
 
 abstract class Importer extends Action
 {
-    public const string ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::import';
+    public const ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::import';
 
     protected string $template = 'Ronangr1_CmsImportExport::import.phtml';
 
