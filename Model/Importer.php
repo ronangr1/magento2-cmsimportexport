@@ -12,6 +12,7 @@ use Magento\Cms\Api\GetPageByIdentifierInterface;
 use Magento\Cms\Model\BlockFactory;
 use Magento\Cms\Model\GetBlockByIdentifier;
 use Magento\Framework\Archive\ArchiveInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\Store;
 use Ronangr1\CmsImportExport\Api\ImporterInterface;
 use Ronangr1\CmsImportExport\Service\Config;
@@ -107,13 +108,23 @@ class Importer implements ImporterInterface
         $config = [
             'cms_page' => [
                 'loader' => function (array $r) {
-                    $identifier = $r['identifier'];
-                    $page = $this->pageByIdentifier->execute($r['identifier'] ?? '', Store::DEFAULT_STORE_ID);
-                    if($page->getId() && !$this->config->allowOverwrite()) {
-                        throw new LocalizedException(__('Page with identifier "%1" already exists.', $identifier));
-                    } else {
-                        $page = $this->pageFactory->create();
+                    if (empty($r['identifier'])) {
+                        throw new LocalizedException(__('Page identifier is required.'));
                     }
+
+                    $identifier = $r['identifier'];
+
+                    try {
+                        $page = $this->pageByIdentifier->execute($identifier, Store::DEFAULT_STORE_ID);
+                        if ($page->getId() && !$this->config->allowOverwrite()) {
+                            throw new LocalizedException(__('Page with identifier "%1" already exists.', $identifier));
+                        }
+                    } catch (NoSuchEntityException $e) {
+                        $page = $this->pageFactory->create();
+                    } catch (\Exception $e) {
+                        throw new LocalizedException(__('Failed to load page: %1', $e->getMessage()));
+                    }
+
                     return $page;
                 },
                 'fields' => [
@@ -130,13 +141,23 @@ class Importer implements ImporterInterface
             ],
             'cms_block' => [
                 'loader' => function (array $r) {
-                    $identifier = $r['identifier'];
-                    $block = $this->blockByIdentifier->execute($r['identifier'] ?? '', Store::DEFAULT_STORE_ID);
-                    if($block->getId() && !$this->config->allowOverwrite()) {
-                        throw new LocalizedException(__('Block with identifier "%1" already exists.', $identifier));
-                    } else {
-                        $block = $this->blockFactory->create();
+                    if (empty($r['identifier'])) {
+                        throw new LocalizedException(__('Block identifier is required.'));
                     }
+
+                    $identifier = $r['identifier'];
+
+                    try {
+                        $block = $this->blockByIdentifier->execute($identifier, Store::DEFAULT_STORE_ID);
+                        if ($block->getId() && !$this->config->allowOverwrite()) {
+                            throw new LocalizedException(__('Block with identifier "%1" already exists.', $identifier));
+                        }
+                    } catch (NoSuchEntityException $e) {
+                        $block = $this->blockFactory->create();
+                    } catch (\Exception $e) {
+                        throw new LocalizedException(__('Failed to load block: %1', $e->getMessage()));
+                    }
+
                     return $block;
                 },
                 'fields' => [
