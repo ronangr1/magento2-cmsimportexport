@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Acl/etc/acl.xsd">
+    <acl>
+        <resources>
+            <resource id="Magento_Backend::admin">
+                <resource id="Ronangr1_CmsImportExport::importexport" title="Cms Import Export" translate="title">
+                    <resource id="Ronangr1_CmsImportExport::config_system" title="Config" translate="title"/>
+                    <resource id="Ronangr1_CmsImportExport::import" title="Import" translate="title"/>
+                    <resource id="Ronangr1_CmsImportExport::export" title="Export" translate="title"/>
+                </resource>
+            </resource>
+        </resources>
+    </acl>
+</config>
