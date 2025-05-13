@@ -45,7 +45,7 @@ class Import extends Action
                 'success' => true,
                 'message' => 'Import completed'
             ]);
-        } catch (\RuntimeException $e) {
+        } catch (\Exception $e) {
             $result->setData([
                 'success' => false,
                 'message' => 'Import failed: ' . $e->getMessage()

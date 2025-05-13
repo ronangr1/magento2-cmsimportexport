@@ -15,8 +15,6 @@ abstract class Importer extends Action
 {
     public const ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::import';
 
-    protected string $template = 'Ronangr1_CmsImportExport::import.phtml';
-
     public function __construct(
         Context $context,
     )
@@ -26,10 +24,6 @@ abstract class Importer extends Action
 
     public function execute()
     {
-        $result = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
-
-        $result->getConfig()->getTitle()->set('Import');
-
-        return $result;
+        return $this->resultFactory->create(ResultFactory::TYPE_PAGE);
     }
 }
