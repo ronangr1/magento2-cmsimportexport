@@ -7,19 +7,29 @@ declare(strict_types=1);
 
 namespace Ronangr1\CmsImportExport\Service;
 
-use Magento\Store\Api\Data\StoreConfigInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
 
 class Config
 {
     public function __construct(
-        protected readonly StoreConfigInterface $storeConfig
+        protected readonly ScopeConfigInterface $scopeConfig,
     )
     {
     }
 
-    public function addMedia(): true
+    public function allowDownloadMedia(): bool
     {
-        /** @TODO Create system config */
-        return true;
+        return $this->scopeConfig->isSetFlag(
+            'cmsimportexport/media/allow_download',
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
+    }
+
+    public function allowOverwrite(): bool
+    {
+        return $this->scopeConfig->isSetFlag(
+            'cmsimportexport/general/allow_overwrite',
+            ScopeConfigInterface::SCOPE_TYPE_DEFAULT
+        );
     }
 }

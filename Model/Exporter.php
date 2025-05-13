@@ -60,7 +60,7 @@ class Exporter implements ExporterInterface
         $csvFilePath = $tmpDir . '/' . $csvFileName;
         file_put_contents($csvFilePath, $csvContent);
 
-        if ($this->config->addMedia()) {
+        if ($this->config->allowDownloadMedia()) {
             $this->exportEntityMedia($entity, $tmpDir);
         }
 

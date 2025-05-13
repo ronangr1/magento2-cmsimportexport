@@ -10,7 +10,9 @@ namespace Ronangr1\CmsImportExport\Model;
 use Magento\Cms\Api\BlockRepositoryInterface;
 use Magento\Cms\Api\GetPageByIdentifierInterface;
 use Magento\Cms\Model\BlockFactory;
+use Magento\Cms\Model\GetBlockByIdentifier;
 use Magento\Framework\Archive\ArchiveInterface;
+use Magento\Store\Model\Store;
 use Ronangr1\CmsImportExport\Api\ImporterInterface;
 use Ronangr1\CmsImportExport\Service\Config;
 use Magento\Cms\Api\PageRepositoryInterface;
@@ -25,6 +27,7 @@ class Importer implements ImporterInterface
         private readonly PageFactory $pageFactory,
         private readonly BlockFactory $blockFactory,
         private readonly GetPageByIdentifierInterface $pageByIdentifier,
+        private readonly GetBlockByIdentifier $blockByIdentifier,
         private readonly PageRepositoryInterface $pageRepository,
         private readonly BlockRepositoryInterface $blockRepository,
         private readonly DirectoryList $directoryList,
@@ -67,7 +70,7 @@ class Importer implements ImporterInterface
 
         $entity = $this->buildEntityFromRow($type, $row);
 
-        if ($this->config->addMedia()) {
+        if ($this->config->allowDownloadMedia()) {
             $newContent = $this->importMediaFromDir($importDir, $row['content'] ?? '');
             $entity->setContent($newContent);
         }
@@ -104,11 +107,14 @@ class Importer implements ImporterInterface
         $config = [
             'cms_page' => [
                 'loader' => function (array $r) {
-                    try {
-                        return $this->pageByIdentifier->execute($r['identifier'] ?? '', 0);
-                    } catch (\Exception $e) {
-                        return $this->pageFactory->create();
+                    $identifier = $r['identifier'];
+                    $page = $this->pageByIdentifier->execute($r['identifier'] ?? '', Store::DEFAULT_STORE_ID);
+                    if($page->getId() && !$this->config->allowOverwrite()) {
+                        throw new LocalizedException(__('Page with identifier "%1" already exists.', $identifier));
+                    } else {
+                        $page = $this->pageFactory->create();
                     }
+                    return $page;
                 },
                 'fields' => [
                     'title' => 'setTitle',
@@ -124,10 +130,12 @@ class Importer implements ImporterInterface
             ],
             'cms_block' => [
                 'loader' => function (array $r) {
-                    $identifier = $r['identifier'] ?? '';
-                    $block = $this->blockFactory->create();
-                    if ($identifier) {
-                        $block->load($identifier, 'identifier');
+                    $identifier = $r['identifier'];
+                    $block = $this->blockByIdentifier->execute($r['identifier'] ?? '', Store::DEFAULT_STORE_ID);
+                    if($block->getId() && !$this->config->allowOverwrite()) {
+                        throw new LocalizedException(__('Block with identifier "%1" already exists.', $identifier));
+                    } else {
+                        $block = $this->blockFactory->create();
                     }
                     return $block;
                 },
@@ -156,7 +164,7 @@ class Importer implements ImporterInterface
             }
         }
 
-        if (!$this->config->addMedia() && isset($row['content'])) {
+        if (!$this->config->allowDownloadMedia() && isset($row['content'])) {
             $entity->setContent($row['content']);
         }
 
