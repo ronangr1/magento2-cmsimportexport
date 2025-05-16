@@ -27,7 +27,7 @@ class Exporter implements ExporterInterface
         private readonly IoFile $ioFile,
         private readonly FilterProvider $filterProvider,
         private readonly Config $config,
-        private readonly ArchiveInterface $zip
+        private readonly ArchiveInterface $zip,
     )
     {
     }
@@ -90,11 +90,22 @@ class Exporter implements ExporterInterface
                     'getId',
                     'getTitle',
                     'getIdentifier',
+                    'getPageLayout',
                     'isActive',
                     'getContentHeading',
                     'getMetaKeywords',
                     'getMetaDescription',
+                    'getMetaTitle',
                     'getContent',
+                    'getCreationTime',
+                    'getUpdateTime',
+                    'getSortOrder',
+                    'getLayoutUpdateXml',
+                    'getCustomTheme',
+                    'getCustomRootTemplate',
+                    'getCustomLayoutUpdateXml',
+                    'getCustomThemeFrom',
+                    'getCustomThemeTo',
                 ],
             ],
             'cms_block' => [
@@ -105,6 +116,8 @@ class Exporter implements ExporterInterface
                     'getIdentifier',
                     'isActive',
                     'getContent',
+                    'getCreationTime',
+                    'getUpdateTime'
                 ],
             ],
         ];
