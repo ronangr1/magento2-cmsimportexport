@@ -10,7 +10,7 @@ declare(strict_types=1);
  * @var \Magento\Framework\Escaper $escaper
  */
 
-$entityType = "cms_page";
+$entityType = $block->getData('entity_type');
 ?>
 
 <div class="admin__page-section">
@@ -21,9 +21,20 @@ $entityType = "cms_page";
                 <input type="file" id="import_file" name="import_file" accept=".zip"/>
             </div>
         </div>
+        <div class="admin__field">
+            OR
+        </div>
+        <div
+            id="drop_zone"
+            ondrop="dropHandler(event);"
+            ondragover="dragOverHandler(event);">
+            <p>
+                <?= $escaper->escapeHtml(__('Drag one or more files to this <i>drop zone</i>'), ['i']) ?>
+            </p>
+        </div>
         <div class="admin__actions">
             <button type="button" id="cms-import-submit" class="action-primary">
-                <span><?= __('Import') ?></span>
+                <span><?= $escaper->escapeHtml(__('Import')) ?></span>
             </button>
         </div>
         <input type="hidden" name="entity_type" value="<?= $escaper->escapeHtmlAttr($entityType) ?>"

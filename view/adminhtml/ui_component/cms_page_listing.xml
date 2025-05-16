@@ -12,7 +12,7 @@
             <button name="import">
                 <url path="cmsimportexport/page/import"/>
                 <class>secondary</class>
-                <label translate="true">Import Blocks</label>
+                <label translate="true">Import Pages</label>
                 <aclResource>Ronangr1_CmsImportExport::import</aclResource>
             </button>
         </buttons>

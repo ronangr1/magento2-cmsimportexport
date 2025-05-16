@@ -11,7 +11,11 @@
         <referenceContainer name="content">
             <block name="cmsimportexport.import.form"
                    class="Ronangr1\CmsImportExport\Block\Adminhtml\Import"
-                   template="Ronangr1_CmsImportExport::page/import.phtml"/>
+                   template="Ronangr1_CmsImportExport::html/form.phtml">
+                <arguments>
+                    <argument name="entity_type" xsi:type="string">cms_page</argument>
+                </arguments>
+            </block>
         </referenceContainer>
     </body>
 </page>

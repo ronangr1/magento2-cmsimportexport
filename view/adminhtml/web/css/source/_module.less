@@ -1,10 +1,125 @@
-.cmsimportexport-page-import, .cmsimportexport-block-import {
-    .admin__field {
-        margin-bottom: 16px;
+.cmsimportexport-page-import,
+.cmsimportexport-block-import {
+    #cms-import-form {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+
+        .admin__field {
+            margin-bottom: 24px;
+
+            &:nth-of-type(1) {
+                .admin__field-label {
+                    display: block;
+                    margin-bottom: 12px;
+                    font-size: 16px;
+                    font-weight: 600;
+                    color: #34495e;
+                }
+
+                .admin__field-control {
+                    input[type="file"] {
+                        display: block;
+                        width: 100%;
+                        padding: 12px 16px;
+                        font-size: 15px;
+                        border: 2px solid #bbb;
+                        border-radius: 4px;
+                        background-color: #fff;
+                        cursor: pointer;
+                        transition: border-color .2s, box-shadow .2s;
+
+                        &:hover {
+                            border-color: #1890ff;
+                            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+                        }
+
+                        &::-webkit-file-result-button, &::-ms-browse {
+                            padding: 8px 16px;
+                            background-color: #1890ff;
+                            color: #fff;
+                            border: none;
+                            border-radius: 4px;
+                            font-size: 14px;
+                            cursor: pointer;
+                            transition: background-color .2s;
+
+                            &:hover {
+                                background-color: darken(#1890ff, 10%);
+                            }
+                        }
+                    }
+                }
+            }
+
+            &:nth-of-type(2) {
+                margin: 40px 0;
+                font-size: 18px;
+                font-weight: 700;
+                color: #555;
+                text-align: center;
+            }
+        }
+
+        #drop_zone {
+            border: 4px dashed #bbb;
+            background-color: #f5f5f5;
+            padding: 50px;
+            text-align: center;
+            color: #444;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: background-color 0.2s,
+            border-color 0.2s,
+            box-shadow 0.2s;
+
+            &:hover,
+            &.drag-over {
+                background-color: #e0f0ff;
+                border-color: #1890ff;
+                color: #222;
+                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+                cursor: pointer;
+            }
+        }
+
+        .admin__actions {
+            margin-top: 32px;
+            margin-bottom: 24px;
+            text-align: right;
+
+            #cms-import-submit {
+                .action-primary();
+                padding: 12px 32px;
+                font-size: 16px;
+                font-weight: 600;
+                border-radius: 4px;
+            }
+        }
     }
 
-    .admin__actions {
-        margin-top: 24px;
-        margin-bottom: 16px;
+    #cms-import-result {
+        margin-top: 32px;
+
+        .result-message {
+            padding: 16px;
+            font-size: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+
+            &.result-message-success {
+                background-color: #e6fffa;
+                border: 2px solid #0bc5ea;
+                color: #065f46;
+            }
+
+            &.result-message-error {
+                background-color: #fff5f5;
+                border: 2px solid #f56565;
+                color: #742a2a;
+            }
+        }
     }
 }
