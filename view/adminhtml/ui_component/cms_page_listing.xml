@@ -17,4 +17,11 @@
             </button>
         </buttons>
     </settings>
+    <columns name="cms_page_columns">
+        <actionsColumn name="actions" class="Ronangr1\CmsImportExport\Ui\Component\Listing\Column\PageActions">
+            <settings>
+                <indexField>page_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
 </listing>

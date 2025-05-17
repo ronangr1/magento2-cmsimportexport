@@ -8,13 +8,20 @@
 <listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <settings>
-    <buttons>
-        <button name="import">
-            <url path="cmsimportexport/block/import"/>
-            <class>secondary</class>
-            <label translate="true">Import Blocks</label>
-            <aclResource>Ronangr1_CmsImportExport::import</aclResource>
-        </button>
-    </buttons>
+        <buttons>
+            <button name="import">
+                <url path="cmsimportexport/block/import"/>
+                <class>secondary</class>
+                <label translate="true">Import Blocks</label>
+                <aclResource>Ronangr1_CmsImportExport::import</aclResource>
+            </button>
+        </buttons>
     </settings>
+    <columns name="cms_block_columns">
+        <actionsColumn name="actions" class="Ronangr1\CmsImportExport\Ui\Component\Listing\Column\BlockActions">
+            <settings>
+                <indexField>block_id</indexField>
+            </settings>
+        </actionsColumn>
+    </columns>
 </listing>
