@@ -5,7 +5,7 @@
  */
 declare(strict_types=1);
 
-namespace Ronangr1\CmsImportExport\Service;
+namespace Ronangr1\CmsImportExport\Helper;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
 

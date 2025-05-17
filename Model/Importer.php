@@ -15,7 +15,7 @@ use Magento\Framework\Archive\ArchiveInterface;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Store\Model\Store;
 use Ronangr1\CmsImportExport\Api\ImporterInterface;
-use Ronangr1\CmsImportExport\Service\Config;
+use Ronangr1\CmsImportExport\Helper\Config;
 use Magento\Cms\Api\PageRepositoryInterface;
 use Magento\Cms\Model\PageFactory;
 use Magento\Framework\App\Filesystem\DirectoryList;

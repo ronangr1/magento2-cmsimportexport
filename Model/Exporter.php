@@ -14,14 +14,14 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Archive\ArchiveInterface;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use Ronangr1\CmsImportExport\Api\ExporterInterface;
-use Ronangr1\CmsImportExport\Service\Config;
+use Ronangr1\CmsImportExport\Helper\Config;
 
 class Exporter implements ExporterInterface
 {
     protected array $headers = [];
 
     public function __construct(
-        private readonly PageRepositoryInterface $pageRepository,
+        private readonly PageRepositoryInterface  $pageRepository,
         private readonly BlockRepositoryInterface $blockRepository,
         private readonly DirectoryList $directoryList,
         private readonly IoFile $ioFile,
