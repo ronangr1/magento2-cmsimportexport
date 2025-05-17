@@ -19,20 +19,23 @@ This module enables you to import and export your CMS content on Magento 2
 
 Magento 2 Open Source or Commerce edition is required.
 
-### # Install the module package with Composer
+This module is compatible with the latest Magento version (2.4.8).
+
+### Install the module package with Composer
 
 `composer require ronangr1/module-cmsimportexport`
 
 ### Launch standard Magento commands
 
 ```
-bin/magento mo:en Ronangr1_CmsImportExport
-bin/magento se:up
+bin/magento setup:upgrade
 ```
 
 ## Documentation
 
-No configuration need at the moment.
+You can allow or disallow page (or block) overwriting by setting configuration in `Store > Configuration > Ronangr1 > CmsImportExport > General > Allow Overwrite`.
+
+You can choose to export media by setting configuration in `Store > Configuration > Ronangr1 > CmsImportExport > Media > Allow Media Download`.
 
 ## Support
 
