@@ -14,7 +14,7 @@ use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Archive\ArchiveInterface;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use Ronangr1\CmsImportExport\Processor\Csv\FinderInterface;
-use Ronangr1\CmsImportExport\Processor\Csv\Reader;
+use Ronangr1\CmsImportExport\Processor\Csv\ReaderInterface;
 use Ronangr1\CmsImportExport\Processor\Entity;
 use Ronangr1\CmsImportExport\Processor\Media;
 use Ronangr1\CmsImportExport\Service\Config;
@@ -47,7 +47,7 @@ class ImporterTest extends TestCase
         $this->ioFile = $this->createMock(IoFile::class);
         $this->entityProcessor = $this->createMock(Entity::class);
         $this->finderInterface = $this->createMock(FinderInterface::class);
-        $this->reader = $this->createMock(Reader::class);
+        $this->reader = $this->createMock(ReaderInterface::class);
         $this->media  = $this->createMock(Media::class);
         $this->config = $this->createMock(Config::class);
     }

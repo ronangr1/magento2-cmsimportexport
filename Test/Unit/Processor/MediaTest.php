@@ -56,8 +56,8 @@ class MediaTest extends TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $entity->method("getContent")->willReturn("<img src='/media/foo.png'><img src='ignore.jpg'>");
-        $this->pageFilter->method("filter")->willReturn("<img src='/media/foo.png'><img src='ignore.jpg'>");
+        $entity->method("getContent")->willReturn('<img src="/media/foo.png"><img src="ignore.jpg">');
+        $this->pageFilter->method("filter")->willReturn('<img src="/media/foo.png"><img src="ignore.jpg">');
 
         $this->directoryList->method("getPath")->with(DirectoryList::MEDIA)->willReturn("/pub/media");
 

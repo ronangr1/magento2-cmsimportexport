@@ -44,11 +44,11 @@ class ExporterTest extends TestCase
     public function testExportProcessNominal()
     {
         $type = "cms_page";
-        $id = 42;
+        $id = 1337;
         $varDir = "/path/to/var/";
         $exportDir = $varDir . "/export";
-        $unique = "abcd1234";
-        $tmpDir = "$exportDir" . "/tmp_" . $unique;
+        $uniqueId = "abcd1234";
+        $tmpDir = "$exportDir" . "/tmp_" . $uniqueId;
         $csvFileName = $type . "_" . $id . ".csv";
         $csvFilePath = $tmpDir . "/" . $csvFileName;
         $zipName = $type . "_". $id . "_export.zip";
@@ -106,7 +106,7 @@ class ExporterTest extends TestCase
 
         $exporter->expects($this->once())
             ->method("getUniqId")
-            ->willReturn($unique);
+            ->willReturn($uniqueId);
 
         $exporter->expects($this->once())
             ->method("writeToFile")
