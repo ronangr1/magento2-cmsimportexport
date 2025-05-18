@@ -29,26 +29,26 @@ class Import extends Action
         $params = $this->getRequest()->getParams();
         if (!$params) {
             $result->setData([
-                'success' => false,
-                'message' => 'Import failed'
+                "success" => false,
+                "message" => "Import failed"
             ]);
 
             return $result;
         }
 
         try {
-            $zipFile = $this->getRequest()->getFiles('import_file');
-            $zipFilePath = $zipFile['tmp_name'];
-            $this->importer->import($zipFilePath, $this->getRequest()->getParam('entity_type'));
+            $zipFile = $this->getRequest()->getFiles("import_file");
+            $zipFilePath = $zipFile["tmp_name"];
+            $this->importer->import($zipFilePath, $this->getRequest()->getParam("entity_type"));
 
             $result->setData([
-                'success' => true,
-                'message' => 'Import completed'
+                "success" => true,
+                "message" => "Import completed"
             ]);
         } catch (\Exception $e) {
             $result->setData([
-                'success' => false,
-                'message' => 'Import failed: ' . $e->getMessage()
+                "success" => false,
+                "message" => "Import failed: " . $e->getMessage()
             ]);
         }
 

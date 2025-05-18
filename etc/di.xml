@@ -9,4 +9,8 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     <preference for="Magento\Framework\Archive\ArchiveInterface"
                 type="Ronangr1\CmsImportExport\Model\Archive\Zip"/>
+    <preference for="Ronangr1\CmsImportExport\Processor\Csv\FinderInterface"
+                type="Ronangr1\CmsImportExport\Processor\Csv\Finder"/>
+    <preference for="Ronangr1\CmsImportExport\Processor\Csv\ExporterInterface"
+                type="Ronangr1\CmsImportExport\Processor\Csv\Exporter"/>
 </config>

@@ -16,7 +16,7 @@ class Import extends Importer
     {
         $result = $this->resultFactory->create(ResultFactory::TYPE_PAGE);
 
-        $result->getConfig()->getTitle()->set('Import Pages');
+        $result->getConfig()->getTitle()->set("Import Pages");
 
         return $result;
     }

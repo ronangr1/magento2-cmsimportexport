@@ -13,7 +13,7 @@ use Magento\Framework\Controller\ResultFactory;
 
 abstract class Importer extends Action
 {
-    public const ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::import';
+    public const ADMIN_RESOURCE = "Ronangr1_CmsImportExport::import";
 
     public function __construct(
         Context $context,

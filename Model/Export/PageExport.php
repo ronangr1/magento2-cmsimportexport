@@ -12,7 +12,7 @@ use Ronangr1\CmsImportExport\Model\Exporter;
 
 class PageExport extends Exporter
 {
-    protected array $headers = [
+    public array $headers = [
         PageInterface::PAGE_ID, PageInterface::TITLE, PageInterface::IDENTIFIER, PageInterface::PAGE_LAYOUT,
         PageInterface::IS_ACTIVE, PageInterface::CONTENT_HEADING, PageInterface::META_KEYWORDS, PageInterface::META_DESCRIPTION,
         PageInterface::META_TITLE, PageInterface::CONTENT, PageInterface::CREATION_TIME, PageInterface::UPDATE_TIME, PageInterface::SORT_ORDER,

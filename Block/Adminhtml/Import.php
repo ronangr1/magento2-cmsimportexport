@@ -13,6 +13,6 @@ class Import extends Template
 {
     public function getActionUrl(): string
     {
-        return $this->getUrl('cmsimportexport/ajax/import', ['_secure' => true]);
+        return $this->getUrl("cmsimportexport/ajax/import", ["_secure" => true]);
     }
 }

@@ -13,7 +13,7 @@ use Magento\Framework\View\Element\UiComponent\Context;
 
 class ExportButton implements ButtonProviderInterface
 {
-    private const ACL_RESOURCE_EXPORT = 'Ronangr1_CmsImportExport::export';
+    private const ACL_RESOURCE_EXPORT = "Ronangr1_CmsImportExport::export";
 
     public function __construct(
         private readonly Context $context,
@@ -28,21 +28,21 @@ class ExportButton implements ButtonProviderInterface
             return [];
         }
 
-        $blockId = (int) $this->context->getRequestParam('block_id');
+        $blockId = (int) $this->context->getRequestParam("block_id");
 
         return [
-            'label' => __('Export'),
-            'on_click' => "location.href = '{$this->getExportUrl($blockId)}';",
-            'class' => 'secondary',
-            'sort_order' => 90,
+            "label" => __("Export"),
+            "on_click" => "location.href = '{$this->getExportUrl($blockId)}';",
+            "class" => "secondary",
+            "sort_order" => 90,
         ];
     }
 
     private function getExportUrl(?int $blockId): string
     {
         return $this->context->getUrl(
-            'cmsimportexport/block/export',
-            ['id' => $blockId]
+            "cmsimportexport/block/export",
+            ["id" => $blockId]
         );
     }
 

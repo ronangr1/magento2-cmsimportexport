@@ -15,7 +15,7 @@ use Ronangr1\CmsImportExport\Api\ExporterInterface;
 
 abstract class Exporter extends Action
 {
-    public const ADMIN_RESOURCE = 'Ronangr1_CmsImportExport::export';
+    public const ADMIN_RESOURCE = "Ronangr1_CmsImportExport::export";
 
     protected string $type = "cms_default";
 
@@ -30,10 +30,10 @@ abstract class Exporter extends Action
 
     public function execute()
     {
-        $id = (int) $this->getRequest()->getParam('id');
+        $id = (int) $this->getRequest()->getParam("id");
         if($id === 0) {
-            $this->messageManager->addErrorMessage(__('You must save the entity before exporting.'));
-            return $this->redirectFactory->create()->setPath('cms/*/new');
+            $this->messageManager->addErrorMessage(__("You must save the entity before exporting."));
+            return $this->redirectFactory->create()->setPath("cms/*/new");
         }
 
         [$fileName, $content, $mime] = $this->exporter->export($id, $this->type);
