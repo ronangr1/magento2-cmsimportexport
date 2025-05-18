@@ -7,6 +7,7 @@ declare(strict_types=1);
 
 namespace Ronangr1\CmsImportExport\Test\Unit\Processor\Csv;
 
+use Magento\Framework\Filesystem;
 use PHPUnit\Framework\TestCase;
 use Magento\Framework\Filesystem\Directory\ReadInterface;
 use Ronangr1\CmsImportExport\Processor\Csv\Finder;
@@ -20,15 +21,15 @@ class FinderTest extends TestCase
     {
         $this->directoryRead = $this->createMock(ReadInterface::class);
 
-        $filesystemStub = $this->createMock(\Magento\Framework\Filesystem::class);
-        $filesystemStub->method("getDirectoryReadByPath")->willReturn($this->directoryRead);
+        $filesystemStub = $this->createMock(Filesystem::class);
+        $filesystemStub->method("getDirectoryRead")->willReturn($this->directoryRead);
 
         $this->finder = new Finder($filesystemStub);
     }
 
     public function testFindCsvFiles()
     {
-        $dir = "/path/to/import/dir";
+        $dir = "import/dir";
 
         $this->directoryRead->method("read")
             ->with($dir)
