@@ -58,7 +58,7 @@ define([
                 })
                 .always(function () {
                     $submit.prop('disabled', false).text($t('Import'));
-                    $result.delay(1000).fadeOut(500)
+                    $result.delay(2500).fadeOut(500).removeAttr('style')
                 });
         }
 
