@@ -5,54 +5,66 @@
  */
 declare(strict_types=1);
 
-namespace Ronangr1\CmsImportExport\Test\Unit\Processor\Csv;
-
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Magento\Framework\Filesystem\Directory\ReadInterface;
+use Magento\Framework\Filesystem\File\ReadInterface as FileReadInterface;
 use Ronangr1\CmsImportExport\Processor\Csv\Reader;
 
 class ReaderTest extends TestCase
 {
-    private $tempFile;
+    private MockObject $directoryRead;
+    private MockObject $fileStream;
+    private $reader;
 
-    protected function tearDown(): void
+    protected function setUp(): void
     {
-        if ($this->tempFile && file_exists($this->tempFile)) {
-            unlink($this->tempFile);
-        }
+        $this->directoryRead = $this->createMock(ReadInterface::class);
+        $this->fileStream = $this->createMock(FileReadInterface::class);
+        $this->reader = new Reader($this->directoryRead);
     }
 
-    public function testReadCsvRowSuccess()
+    public function testReadCsvRowReturnsAssocRow()
     {
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'csv_');
-        file_put_contents($this->tempFile, "col1,col2\nfoo,bar\n");
-        $reader = new Reader();
-        $result = $reader->readCsvRow($this->tempFile);
-        $this->assertSame(['col1' => 'foo', 'col2' => 'bar'], $result);
+        $path = 'import/file.csv';
+
+        $this->directoryRead->method('isFile')->with($path)->willReturn(true);
+        $this->directoryRead->method('isReadable')->with($path)->willReturn(true);
+        $this->directoryRead->method('openFile')->with($path, 'r')->willReturn($this->fileStream);
+        $this->fileStream->expects($this->exactly(2))->method('readCsv')->willReturnOnConsecutiveCalls(
+            ['id', 'identifier'],
+            ['1', 'dummy']
+        );
+        $this->fileStream->expects($this->once())->method('close');
+
+        $result = $this->reader->readCsvRow($path);
+
+        $this->assertEquals(['id' => '1', 'identifier' => 'dummy'], $result);
     }
 
-    public function testReadCsvRowThrowsOnNonExistingFile()
+    public function testThrowsOnUnreadableFile()
     {
-        $reader = new Reader();
+        $path = 'import/missing.csv';
+        $this->directoryRead->method('isFile')->with($path)->willReturn(false);
+
         $this->expectException(\RuntimeException::class);
-        $reader->readCsvRow('/not/exist.csv');
+        $this->reader->readCsvRow($path);
     }
 
-    public function testReadCsvRowThrowsOnInvalidCsv()
+    public function testThrowsOnHeadersMismatch()
     {
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'csv_');
-        file_put_contents($this->tempFile, "id,name\n1\n");
-        $reader = new Reader();
-        $this->expectException(\RuntimeException::class);
-        $reader->readCsvRow($this->tempFile);
-    }
+        $path = 'import/file.csv';
 
-    public function testReadCsvRowThrowsOnUnreadableFile()
-    {
-        $this->tempFile = tempnam(sys_get_temp_dir(), 'csv_');
-        file_put_contents($this->tempFile, "id,name\n1,foo\n");
-        chmod($this->tempFile, 0000);
-        $reader = new Reader();
+        $this->directoryRead->method('isFile')->with($path)->willReturn(true);
+        $this->directoryRead->method('isReadable')->with($path)->willReturn(true);
+        $this->directoryRead->method('openFile')->with($path, 'r')->willReturn($this->fileStream);
+        $this->fileStream->expects($this->exactly(2))->method('readCsv')->willReturnOnConsecutiveCalls(
+            ['id', 'identifier'],
+            ['onlyOneValue']
+        );
+        $this->fileStream->expects($this->once())->method('close');
+
         $this->expectException(\RuntimeException::class);
-        $reader->readCsvRow($this->tempFile);
+        $this->reader->readCsvRow($path);
     }
 }
