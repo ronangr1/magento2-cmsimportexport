@@ -12,7 +12,7 @@ use Magento\Framework\Archive\ArchiveInterface;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use Ronangr1\CmsImportExport\Api\ImporterInterface;
 use Ronangr1\CmsImportExport\Processor\Csv\FinderInterface;
-use Ronangr1\CmsImportExport\Processor\Csv\Reader;
+use Ronangr1\CmsImportExport\Processor\Csv\ReaderInterface;
 use Ronangr1\CmsImportExport\Processor\Entity;
 use Ronangr1\CmsImportExport\Processor\Media;
 use Ronangr1\CmsImportExport\Service\Config;
@@ -21,7 +21,7 @@ class Importer implements ImporterInterface
 {
     public function __construct(
         private readonly Entity $processor,
-        private readonly Reader $csvReader,
+        private readonly ReaderInterface $csvReader,
         private readonly DirectoryList $directoryList,
         private readonly Media $media,
         private readonly IoFile $ioFile,
@@ -58,7 +58,6 @@ class Importer implements ImporterInterface
         $csvPath = reset($csvFiles);
 
         $row = $this->csvReader->readCsvRow($csvPath);
-
         $entity = $this->processor->buildEntityFromRow($type, $row);
 
         if ($this->config->allowDownloadMedia()) {

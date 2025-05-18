@@ -7,25 +7,38 @@ declare(strict_types=1);
 
 namespace Ronangr1\CmsImportExport\Processor\Csv;
 
-class Reader
+use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Filesystem;
+use Magento\Framework\Filesystem\Directory\ReadInterface;
+
+class Reader implements ReaderInterface
 {
-    public function readCsvRow(string $filePath): array
+    public function __construct(
+        private readonly Filesystem $filesystem,
+        private readonly ReadInterface $directoryRead,
+    )
     {
-        if (!is_file($filePath) || !is_readable($filePath)) {
-            throw new \RuntimeException(sprintf("Failed to read file: %s", $filePath));
+    }
+
+    public function readCsvRow(string $path): array
+    {
+        $varDirectory = $this->filesystem->getDirectoryRead(DirectoryList::VAR_DIR);
+        $file = $varDirectory->getAbsolutePath($path);
+
+        if (
+            !$this->directoryRead->isFile($file) ||
+            !$this->directoryRead->isReadable($file)
+        ) {
+            throw new \RuntimeException(sprintf("Failed to read file: %s", $file));
         }
 
-        $h = fopen($filePath, "r");
-        if ($h === false) {
-            throw new \RuntimeException(sprintf("Failed to open file: %s", $filePath));
-        }
-
-        $headers = fgetcsv($h);
-        $data = fgetcsv($h);
-        fclose($h);
+        $stream = $this->directoryRead->openFile($file, 'r');
+        $headers = $stream->readCsv();
+        $data = $stream->readCsv();
+        $stream->close();
 
         if (!$data || count($headers) !== count($data)) {
-            throw new \RuntimeException(sprintf("Failed to read headers: %s", implode(", ", $headers)));
+            throw new \RuntimeException(sprintf("Failed to read headers: %s", implode(", ", $headers ?? [])));
         }
 
         return array_combine($headers, $data);

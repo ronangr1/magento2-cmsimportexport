@@ -12,5 +12,5 @@ use Magento\Cms\Api\Data\PageInterface;
 
 interface ExporterInterface
 {
-    public function exportEntityCsv(string $type, int $id, $fp, array $headers): array;
+    public function exportEntityCsv(string $type, int $id, $fp, array $headers): array|PageInterface|BlockInterface;
 }

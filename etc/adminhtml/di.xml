@@ -32,6 +32,16 @@
             <argument name="zip" xsi:type="object">Ronangr1\CmsImportExport\Model\Archive\Zip</argument>
         </arguments>
     </type>
+    <type name="Ronangr1\CmsImportExport\Processor\Csv\Reader">
+        <arguments>
+            <argument name="directoryRead" xsi:type="object">MediaDirectoryRead</argument>
+        </arguments>
+    </type>
+    <virtualType name="MediaDirectoryRead" type="Magento\Framework\Filesystem\Directory\Read">
+        <arguments>
+            <argument name="driver" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
+        </arguments>
+    </virtualType>
 </config>
 
 

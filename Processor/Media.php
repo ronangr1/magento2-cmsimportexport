@@ -23,7 +23,7 @@ class Media
 
     public function importMediaFromDir(string $importDir, string $content): string
     {
-        $mediaDir = $importDir . '/media';
+        $mediaDir = $importDir . "/media";
         if (!is_dir($mediaDir)) {
             return $content;
         }
@@ -45,8 +45,8 @@ class Media
         }
 
         return preg_replace_callback(
-            '~(["\']?)/media/([^"\')\s]+)(["\']?)~i',
-            fn($m) => '{{media url="' . $m[2] . '"}}',
+            "~(['\"]?)/media/([^'\")\s]+)(['\"]?)~i",
+            fn($m) => "{{media url='" . $m[2] . "'}}",
             $content
         );
     }
@@ -55,24 +55,21 @@ class Media
     {
         $content = html_entity_decode($entity->getContent());
         $filtered = $this->filterProvider->getPageFilter()->filter($content);
-
         if (preg_match_all('/<img[^>]+src="([^"]+)"/i', $filtered, $matches)) {
-            $mediaTmpDir = $tmpDir . '/media';
+            $mediaTmpDir = $tmpDir . "/media";
             $this->ioFile->mkdir($mediaTmpDir, 0755);
 
             $mediaBase = $this->directoryList->getPath(DirectoryList::MEDIA);
             $srcs = array_unique($matches[1]);
 
             foreach ($srcs as $src) {
-                if (!str_contains($src, '/media/')) {
+                if (!str_contains($src, "/media/")) {
                     continue;
                 }
-                $path = parse_url($src, PHP_URL_PATH) ?: '';
-                $relative = ltrim(preg_replace('#^/media/#', '', $path), '/');
+                $path = parse_url($src, PHP_URL_PATH) ?: "";
+                $relative = ltrim(preg_replace("#^/media/#", "", $path), "/");
                 $absolute = $mediaBase . DIRECTORY_SEPARATOR . $relative;
-                if (is_file($absolute)) {
-                    $this->ioFile->cp($absolute, $mediaTmpDir . '/' . basename($absolute));
-                }
+                $this->ioFile->cp($absolute, $mediaTmpDir . "/" . basename($absolute));
             }
         }
     }

@@ -19,7 +19,7 @@ class Zip extends MagentoZip
     {
         $zip = new ZipArchive();
         if ($zip->open($destination, ZipArchive::CREATE | ZipArchive::OVERWRITE) !== true) {
-            throw new \RuntimeException(sprintf('Unable to create %s to archive', $destination));
+            throw new \RuntimeException(sprintf("Unable to create %s to archive", $destination));
         }
 
         if (is_dir($source)) {
@@ -29,7 +29,7 @@ class Zip extends MagentoZip
             );
             foreach ($iterator as $item) {
                 $realPath = $item->getRealPath();
-                $local = ltrim(str_replace($source, '', $realPath), DIRECTORY_SEPARATOR);
+                $local = ltrim(str_replace($source, "", $realPath), DIRECTORY_SEPARATOR);
                 if ($item->isDir()) {
                     $zip->addEmptyDir($local);
                 } elseif ($item->isFile()) {

@@ -13,4 +13,6 @@
                 type="Ronangr1\CmsImportExport\Processor\Csv\Finder"/>
     <preference for="Ronangr1\CmsImportExport\Processor\Csv\ExporterInterface"
                 type="Ronangr1\CmsImportExport\Processor\Csv\Exporter"/>
+    <preference for="Ronangr1\CmsImportExport\Processor\Csv\ReaderInterface"
+                type="Ronangr1\CmsImportExport\Processor\Csv\Reader"/>
 </config>

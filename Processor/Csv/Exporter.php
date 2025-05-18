@@ -8,6 +8,8 @@ declare(strict_types=1);
 namespace Ronangr1\CmsImportExport\Processor\Csv;
 
 use Magento\Cms\Api\BlockRepositoryInterface;
+use Magento\Cms\Api\Data\BlockInterface;
+use Magento\Cms\Api\Data\PageInterface;
 use Magento\Cms\Api\PageRepositoryInterface;
 
 class Exporter implements ExporterInterface
@@ -19,7 +21,7 @@ class Exporter implements ExporterInterface
     {
     }
 
-    public function exportEntityCsv(string $type, int $id, $fp, array $headers): array
+    public function exportEntityCsv(string $type, int $id, $fp, array $headers): array|PageInterface|BlockInterface
     {
         $config = [
             "cms_page" => [

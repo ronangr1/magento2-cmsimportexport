@@ -35,104 +35,104 @@ class Entity
     public function save(string $type, $entity): void
     {
         $config = [
-            'cms_page' => fn($e) => $this->pageRepository->save($e),
-            'cms_block' => fn($e) => $this->blockRepository->save($e),
+            "cms_page" => fn($e) => $this->pageRepository->save($e),
+            "cms_block" => fn($e) => $this->blockRepository->save($e),
         ];
         if (!isset($config[$type])) {
-            throw new \InvalidArgumentException(sprintf('Unknown entity type: %s', $type));
+            throw new \InvalidArgumentException(sprintf("Unknown entity type: %s", $type));
         }
         try {
             $config[$type]($entity);
         } catch (LocalizedException $e) {
-            throw new \RuntimeException(sprintf('Failed to save entity: %s', $e->getMessage()));
+            throw new \RuntimeException(sprintf("Failed to save entity: %s", $e->getMessage()));
         }
     }
 
     public function buildEntityFromRow(string $type, array $row)
     {
         $config = [
-            'cms_page' => [
-                'loader' => function (array $row) {
-                    if (empty($row['identifier'])) {
-                        throw new LocalizedException(__('Page identifier is required.'));
+            "cms_page" => [
+                "loader" => function (array $row) {
+                    if (empty($row["identifier"])) {
+                        throw new LocalizedException(__("Page identifier is required."));
                     }
 
-                    $identifier = $row['identifier'];
+                    $identifier = $row["identifier"];
 
                     try {
                         $page = $this->pageByIdentifier->execute($identifier, Store::DEFAULT_STORE_ID);
                         $allowOverwrite = $this->config->allowOverwrite();
                         if ($page->getId() && !$allowOverwrite) {
-                            throw new LocalizedException(__('Page with identifier "%1" already exists.', $identifier));
+                            throw new LocalizedException(__("Page with identifier '%1' already exists.", $identifier));
                         }
                     } catch (NoSuchEntityException) {
                         $page = $this->pageFactory->create();
                     } catch (\Exception $e) {
-                        throw new LocalizedException(__('Failed to load page: %1', $e->getMessage()));
+                        throw new LocalizedException(__("Failed to load page: %1", $e->getMessage()));
                     }
 
                     return $page;
                 },
-                'fields' => [
-                    'title' => 'setTitle',
-                    'identifier' => 'setIdentifier',
-                    'is_active' => 'setIsActive',
-                    'content_heading' => 'setContentHeading',
-                    'meta_keywords' => 'setMetaKeywords',
-                    'meta_description' => 'setMetaDescription',
+                "fields" => [
+                    "title" => "setTitle",
+                    "identifier" => "setIdentifier",
+                    "is_active" => "setIsActive",
+                    "content_heading" => "setContentHeading",
+                    "meta_keywords" => "setMetaKeywords",
+                    "meta_description" => "setMetaDescription",
                 ],
-                'saver' => function ($entity) {
+                "saver" => function ($entity) {
                     $this->pageRepository->save($entity);
                 }
             ],
-            'cms_block' => [
-                'loader' => function (array $row) {
-                    if (empty($row['identifier'])) {
-                        throw new LocalizedException(__('Block identifier is required.'));
+            "cms_block" => [
+                "loader" => function (array $row) {
+                    if (empty($row["identifier"])) {
+                        throw new LocalizedException(__("Block identifier is required."));
                     }
 
-                    $identifier = $row['identifier'];
+                    $identifier = $row["identifier"];
 
                     try {
                         $block = $this->blockByIdentifier->execute($identifier, Store::DEFAULT_STORE_ID);
                         if ($block->getId() && !$this->config->allowOverwrite()) {
-                            throw new LocalizedException(__('Block with identifier "%1" already exists.', $identifier));
+                            throw new LocalizedException(__("Block with identifier '%1' already exists.", $identifier));
                         }
                     } catch (NoSuchEntityException $e) {
                         $block = $this->blockFactory->create();
                     } catch (\Exception $e) {
-                        throw new LocalizedException(__('Failed to load block: %1', $e->getMessage()));
+                        throw new LocalizedException(__("Failed to load block: %1", $e->getMessage()));
                     }
 
                     return $block;
                 },
-                'fields' => [
-                    'title' => 'setTitle',
-                    'identifier' => 'setIdentifier',
-                    'is_active' => 'setIsActive',
+                "fields" => [
+                    "title" => "setTitle",
+                    "identifier" => "setIdentifier",
+                    "is_active" => "setIsActive",
                 ],
-                'saver' => function ($entity) {
+                "saver" => function ($entity) {
                     $this->blockRepository->save($entity);
                 }
             ],
         ];
 
         if (!isset($config[$type])) {
-            throw new \InvalidArgumentException(sprintf('Unknown type: %s', $type));
+            throw new \InvalidArgumentException(sprintf("Unknown type: %s", $type));
         }
 
         $c = $config[$type];
-        $entity = $c['loader']($row);
+        $entity = $c["loader"]($row);
 
-        foreach ($c['fields'] as $fieldKey => $setter) {
+        foreach ($c["fields"] as $fieldKey => $setter) {
             if (array_key_exists($fieldKey, $row)) {
                 $value = $row[$fieldKey];
                 $entity->$setter($value);
             }
         }
 
-        if (!$this->config->allowDownloadMedia() && isset($row['content'])) {
-            $entity->setContent($row['content']);
+        if (!$this->config->allowDownloadMedia() && isset($row["content"])) {
+            $entity->setContent($row["content"]);
         }
 
         return $entity;
