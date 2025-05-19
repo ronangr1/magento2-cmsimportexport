@@ -7,93 +7,144 @@ declare(strict_types=1);
 
 namespace Ronangr1\CmsImportExport\Test\Unit\Controller\Adminhtml;
 
+use Magento\Cms\Api\Data\PageInterface;
+use Magento\Framework\Message\ManagerInterface;
+use Magento\Framework\UrlInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Magento\Backend\App\Action\Context;
-use Magento\Framework\App\Request\Http as HttpRequest;
+use Magento\Framework\App\Request\Http;
 use Magento\Framework\App\Response\Http\FileFactory;
-use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\Result\RedirectFactory;
-use Magento\Framework\Message\ManagerInterface;
-use Magento\Framework\App\Filesystem\DirectoryList;
+use Magento\Framework\Controller\Result\Redirect;
+use Magento\Cms\Api\PageRepositoryInterface;
+use Magento\Cms\Api\BlockRepositoryInterface;
 use Ronangr1\CmsImportExport\Api\ExporterInterface;
+use Exception;
 use Ronangr1\CmsImportExport\Controller\Adminhtml\Exporter;
 
 class ExporterTest extends TestCase
 {
-    private $contextMock;
-    private $fileFactoryMock;
-    private $exporterMock;
-    private $redirectFactoryMock;
-    private $requestMock;
-    private $messageManagerMock;
+    private MockObject $context;
+
+    private MockObject $fileFactory;
+
+    private MockObject $exporter;
+
+    private MockObject $redirectFactory;
+
+    private MockObject $pageRepository;
+
+    private MockObject $blockRepository;
+
+    private MockObject $request;
+
+    private MockObject $redirectResult;
+
+    private MockObject $url;
+
+    private MockObject $page;
+
+    private MockObject $messageManager;
 
     protected function setUp(): void
     {
-        $this->contextMock = $this->createMock(Context::class);
-        $this->fileFactoryMock = $this->createMock(FileFactory::class);
-        $this->exporterMock = $this->createMock(ExporterInterface::class);
-        $this->redirectFactoryMock = $this->createMock(RedirectFactory::class);
-        $this->requestMock = $this->createMock(HttpRequest::class);
-        $this->messageManagerMock = $this->createMock(ManagerInterface::class);
+        $this->context = $this->createMock(Context::class);
+        $this->fileFactory = $this->createMock(FileFactory::class);
+        $this->exporter = $this->createMock(ExporterInterface::class);
+        $this->redirectFactory = $this->createMock(RedirectFactory::class);
+        $this->pageRepository = $this->createMock(PageRepositoryInterface::class);
+        $this->blockRepository = $this->createMock(BlockRepositoryInterface::class);
+        $this->request = $this->createMock(Http::class);
+        $this->redirectResult = $this->createMock(Redirect::class);
+        $this->url = $this->createMock(UrlInterface::class);
 
-        $this->contextMock->method("getRequest")->willReturn($this->requestMock);
-        $this->contextMock->method("getMessageManager")->willReturn($this->messageManagerMock);
+        $this->context->method("getRequest")->willReturn($this->request);
+        $this->redirectFactory->method("create")->willReturn($this->redirectResult);
+        $this->redirectResult->method("setPath")->willReturn($this->redirectResult);
+        $this->context->method("getUrl")->willReturn($this->url);
+
     }
 
-    private function getExporterInstance()
+    public function testExecuteGenerateZip()
     {
-        return new class(
-            $this->contextMock,
-            $this->fileFactoryMock,
-            $this->exporterMock,
-            $this->redirectFactoryMock
-        ) extends Exporter {};
-    }
+        $fakeId = 99;
+        $fakeFileName = "page_99.zip";
+        $fakeFileContent = ["value" => "dummy content"];
+        $fakeMime = "application/zip";
 
-    public function testExecuteWithNoId()
-    {
-        $this->requestMock->method("getParam")->with("id")->willReturn(null);
-        $this->messageManagerMock->expects($this->once())
-            ->method("addErrorMessage")
-            ->with(__("You must save the entity before exporting."));
+        $this->request->method("getParam")->with("id")->willReturn($fakeId);
 
-        $redirectMock = $this->createMock(Redirect::class);
-        $redirectMock->expects($this->once())
-            ->method("setPath")
-            ->with("cms/*/new")
-            ->willReturnSelf();
-
-        $this->redirectFactoryMock->expects($this->once())
-            ->method("create")
-            ->willReturn($redirectMock);
-
-        $controller = $this->getExporterInstance();
-        $result = $controller->execute();
-        $this->assertSame($redirectMock, $result);
-    }
-
-    public function testExecuteWithValidId()
-    {
-        $this->requestMock->method("getParam")->with("id")->willReturn(5);
-
-        $fileName = "export.zip";
-        $content = "data";
-        $mime = "application/zip";
-
-        $this->exporterMock->expects($this->once())
+        $this->exporter->expects($this->once())
             ->method("export")
-            ->with(5, "cms_default")
-            ->willReturn([$fileName, $content, $mime]);
+            ->with($fakeId, "cms_page")
+            ->willReturn([$fakeFileName, $fakeFileContent, $fakeMime]);
 
-        $fileResultMock = new \stdClass();
-
-        $this->fileFactoryMock->expects($this->once())
+        $this->fileFactory->expects($this->once())
             ->method("create")
-            ->with($fileName, $content, DirectoryList::VAR_DIR, $mime)
-            ->willReturn($fileResultMock);
+            ->with(
+                $fakeFileName,
+                $fakeFileContent,
+                "var",
+                $fakeMime
+            );
 
-        $controller = $this->getExporterInstance();
+        $this->page = $this->getMockBuilder(PageInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->page->method("getTitle")->willReturn("Dummy Page Title");
+
+        $this->pageRepository
+            ->method("getById")
+            ->willReturn($this->page);
+
+        $this->messageManager = $this->getMockBuilder(ManagerInterface::class)
+            ->disableOriginalConstructor()
+            ->getMock();
+        $this->context->method("getMessageManager")->willReturn($this->messageManager);
+
+        $controller = new class(
+            $this->context,
+            $this->fileFactory,
+            $this->exporter,
+            $this->redirectFactory,
+            $this->pageRepository,
+            $this->blockRepository,
+            $this->url,
+        ) extends Exporter {
+            protected string $type = "cms_page";
+        };
+
+        $controller->execute();
+    }
+
+    public function testExecuteExportZipException()
+    {
+        $fakeId = 88;
+
+        $this->request->method("getParam")->with("id")->willReturn($fakeId);
+
+        $this->exporter->expects($this->once())
+            ->method("export")
+            ->with($fakeId, "cms_page")
+            ->willThrowException(new Exception("BAD ZIP"));
+
+        $this->expectException(\Exception::class);
+        $this->expectExceptionMessage("BAD ZIP");
+
+        $controller = new class(
+            $this->context,
+            $this->fileFactory,
+            $this->exporter,
+            $this->redirectFactory,
+            $this->pageRepository,
+            $this->blockRepository,
+            $this->url,
+        ) extends Exporter {
+            protected string $type = "cms_page";
+        };
+
         $result = $controller->execute();
-        $this->assertSame($fileResultMock, $result);
+        $this->assertSame($this->redirectResult, $result);
     }
 }

@@ -1,0 +1,9 @@
+<?php
+/**
+ * @var \Magento\Backend\Block\Template $block
+ * @var \Magento\Framework\Escaper $escaper
+ */
+?>
+
+
+<?= $escaper->escapeHtml($block->getData('html'), $block->getData('allowed_tags')); ?>

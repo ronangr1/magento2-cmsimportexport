@@ -17,6 +17,17 @@
             </button>
         </buttons>
     </settings>
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="export">
+                <settings>
+                    <url path="cmsimportexport/page/massExport"/>
+                    <type>post</type>
+                    <label translate="true">Export</label>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
     <columns name="cms_page_columns">
         <actionsColumn name="actions" class="Ronangr1\CmsImportExport\Ui\Component\Listing\Column\PageActions">
             <settings>

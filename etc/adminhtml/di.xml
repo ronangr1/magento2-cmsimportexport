@@ -17,6 +17,16 @@
             <argument name="exporter" xsi:type="object">Ronangr1\CmsImportExport\Model\Export\BlockExport</argument>
         </arguments>
     </type>
+    <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Page\MassExport">
+        <arguments>
+            <argument name="exporter" xsi:type="object">Ronangr1\CmsImportExport\Model\Export\PageExport</argument>
+        </arguments>
+    </type>
+    <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Block\MassExport">
+        <arguments>
+            <argument name="exporter" xsi:type="object">Ronangr1\CmsImportExport\Model\Export\BlockExport</argument>
+        </arguments>
+    </type>
     <type name="Ronangr1\CmsImportExport\Controller\Adminhtml\Ajax\Import">
         <arguments>
             <argument name="importer" xsi:type="object">Ronangr1\CmsImportExport\Model\Importer</argument>
@@ -42,6 +52,18 @@
             <argument name="driver" xsi:type="object">Magento\Framework\Filesystem\Driver\File</argument>
         </arguments>
     </virtualType>
+    <type name="Magento\Framework\View\Element\Message\MessageConfigurationsPool">
+        <arguments>
+            <argument name="configurationsMap" xsi:type="array">
+                <item name="withHtml" xsi:type="array">
+                    <item name="renderer" xsi:type="const">\Magento\Framework\View\Element\Message\Renderer\BlockRenderer::CODE</item>
+                    <item name="data" xsi:type="array">
+                        <item name="template" xsi:type="string">Ronangr1_CmsImportExport::messages.phtml</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
 </config>
 
 

@@ -15,15 +15,13 @@ abstract class Importer extends Action
 {
     public const ADMIN_RESOURCE = "Ronangr1_CmsImportExport::import";
 
-    public function __construct(
-        Context $context,
-    )
-    {
-        parent::__construct($context);
-    }
-
     public function execute()
     {
         return $this->resultFactory->create(ResultFactory::TYPE_PAGE);
+    }
+
+    protected function _isAllowed(): bool
+    {
+        return $this->_authorization->isAllowed(self::ADMIN_RESOURCE);
     }
 }
