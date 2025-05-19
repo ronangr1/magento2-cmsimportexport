@@ -32,7 +32,7 @@ class ExportButton implements ButtonProviderInterface
 
         return [
             "label" => __("Export"),
-            "on_click" => "location.href = '{$this->getExportUrl($blockId)}';",
+            'on_click' => "location.href = '{$this->getExportUrl($blockId)}';",
             "class" => "secondary",
             "sort_order" => 90,
         ];
