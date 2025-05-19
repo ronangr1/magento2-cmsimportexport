@@ -73,13 +73,27 @@ class Entity
 
                     return $page;
                 },
+
                 "fields" => [
+                    "id" => "setId",
                     "title" => "setTitle",
                     "identifier" => "setIdentifier",
+                    "page_layout" => "setPageLayout",
                     "is_active" => "setIsActive",
                     "content_heading" => "setContentHeading",
                     "meta_keywords" => "setMetaKeywords",
                     "meta_description" => "setMetaDescription",
+                    "meta_title" => "setMetaTitle",
+                    "content" => "setContent",
+                    "creation_time" => "setCreationTime",
+                    "update_time" => "setUpdateTime",
+                    "sort_order" => "setSortOrder",
+                    "layout_update_xml" => "setLayoutUpdateXml",
+                    "custom_theme" => "setCustomTheme",
+                    "custom_root_template" => "setCustomRootTemplate",
+                    "custom_layout_update_xml" => "setCustomLayoutUpdateXml",
+                    "custom_theme_from" => "setCustomThemeFrom",
+                    "custom_theme_to" => "setCustomThemeTo",
                 ],
                 "saver" => function ($entity) {
                     $this->pageRepository->save($entity);
@@ -106,10 +120,15 @@ class Entity
 
                     return $block;
                 },
+                
                 "fields" => [
+                    "id" => "setId",
                     "title" => "setTitle",
                     "identifier" => "setIdentifier",
                     "is_active" => "setIsActive",
+                    "content" => "setContent",
+                    "creation_time" => "setCreationTime",
+                    "update_time" => "setUpdateTime",
                 ],
                 "saver" => function ($entity) {
                     $this->blockRepository->save($entity);
