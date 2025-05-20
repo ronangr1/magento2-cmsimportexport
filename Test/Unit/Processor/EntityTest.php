@@ -95,27 +95,26 @@ class EntityTest extends TestCase
     public function testBuildEntityFromRowCmsPageWithOverwrite()
     {
         $row = [
+            "id" => 42,
             "title" => "Dummy",
             "identifier" => "dummy",
             "is_active" => 1,
             "content_heading" => "heading",
             "meta_keywords" => "dummy, dummo",
             "meta_description" => "dummy description",
-            "content" => "dummy content"
         ];
 
         $pageMock = $this->getMockBuilder(Page::class)
             ->onlyMethods(["getId","setTitle","setIdentifier","setIsActive","setContentHeading","setMetaKeywords","setMetaDescription","setContent"])
             ->disableOriginalConstructor()
             ->getMock();
-        $pageMock->expects($this->any())->method("getId")->willReturn(42);
-        $pageMock->expects($this->once())->method("setTitle")->with("Dummy");
-        $pageMock->expects($this->once())->method("setIdentifier")->with("dummy");
-        $pageMock->expects($this->once())->method("setIsActive")->with(1);
-        $pageMock->expects($this->once())->method("setContentHeading")->with("heading");
-        $pageMock->expects($this->once())->method("setMetaKeywords")->with("dummy, dummo");
-        $pageMock->expects($this->once())->method("setMetaDescription")->with("dummy description");
-        $pageMock->expects($this->once())->method("setContent")->with("dummy content");
+        $pageMock->expects($this->any())->method("getId")->willReturn($row["id"]);
+        $pageMock->expects($this->once())->method("setTitle")->with($row["title"]);
+        $pageMock->expects($this->once())->method("setIdentifier")->with($row["identifier"]);
+        $pageMock->expects($this->once())->method("setIsActive")->with($row["is_active"]);
+        $pageMock->expects($this->once())->method("setContentHeading")->with($row["content_heading"]);
+        $pageMock->expects($this->once())->method("setMetaKeywords")->with($row["meta_keywords"]);
+        $pageMock->expects($this->once())->method("setMetaDescription")->with($row["meta_description"]);
 
         $this->pageByIdentifier->expects($this->once())
             ->method("execute")

@@ -7,6 +7,8 @@ declare(strict_types=1);
 
 namespace Ronangr1\CmsImportExport\Test\Unit\Model;
 
+use Magento\Framework\File\Uploader;
+use Magento\Framework\File\UploaderFactory;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Ronangr1\CmsImportExport\Model\Importer;
@@ -38,6 +40,8 @@ class ImporterTest extends TestCase
     private MockObject $media;
 
     private MockObject $config;
+    private MockObject $uploader;
+    private MockObject $uploaderInstance;
 
     public function setUp(): void
     {
@@ -50,17 +54,26 @@ class ImporterTest extends TestCase
         $this->reader = $this->createMock(ReaderInterface::class);
         $this->media  = $this->createMock(Media::class);
         $this->config = $this->createMock(Config::class);
+        $this->uploader = $this->createMock(UploaderFactory::class);
+        $this->uploaderInstance = $this->createMock(Uploader::class);
     }
 
     public function testImportProcess()
     {
-        $zipPath = "/tmp/file.zip";
         $type = "cms_page";
         $varDir = "/var/www/var";
-        $baseName = "file";
-        $importDir = $varDir . "/import/" . $baseName;
+        $importDir = $varDir . "/import/" . $type;
         $csvPath = $importDir . "/my-file.csv";
         $csvRow = ["identifier" => "foo", "content" => "bar"];
+        $zipFile = [
+            "name" => "cms_page_11_export.zip",
+            "full_path" => "cms_page_11_export.zip",
+            "type" => "application/zip",
+            "tmp_name" => "/tmp/phptBElPq",
+            "error" => 0,
+            "size" => 812
+        ];
+
         $entityMock = $this->entity;
 
         $directoryList = $this->directoryList;
@@ -87,6 +100,11 @@ class ImporterTest extends TestCase
         $config = $this->config;
         $config->method("allowDownloadMedia")->willReturn(false);
 
+        $uploaderFactory = $this->uploader;
+        $uploaderInstance = $this->uploaderInstance;
+        $uploaderFactory->method('create')->willReturn($uploaderInstance);
+        $uploaderInstance->method('save')->willReturn($zipFile);
+
         $importer = new Importer(
             $entityProcessor,
             $csvReader,
@@ -95,19 +113,26 @@ class ImporterTest extends TestCase
             $ioFile,
             $config,
             $archive,
-            $finder
+            $finder,
+            $uploaderFactory
         );
 
-        $importer->import($zipPath, $type);
+        $importer->import($zipFile, $type);
     }
 
     public function testImportThrowsWhenNoCsvFound()
     {
-        $zipPath = "/tmp/file.zip";
         $type = "cms_page";
         $varDir = "/var/www/var";
-        $baseName = "file";
-        $importDir = $varDir . "/import/" . $baseName;
+        $importDir = $varDir . "/import/" . $type;
+        $zipFile = [
+            "name" => "cms_page_11_export.zip",
+            "full_path" => "cms_page_11_export.zip",
+            "type" => "application/zip",
+            "tmp_name" => "/tmp/phptBElPq",
+            "error" => 0,
+            "size" => 812
+        ];
 
         $directoryList = $this->directoryList;
         $directoryList->method("getPath")->willReturn($varDir);
@@ -125,34 +150,43 @@ class ImporterTest extends TestCase
         $media = $this->media;
         $config = $this->config;
 
+        $uploaderFactory = $this->uploader;
+        $uploaderInstance = $this->uploaderInstance;
+        $uploaderFactory->method('create')->willReturn($uploaderInstance);
+        $uploaderInstance->method('save')->willReturn($zipFile);
+
         $importer = new Importer(
             $entityProcessor, $csvReader, $directoryList, $media,
-            $ioFile, $config, $archive, $finder
+            $ioFile, $config, $archive, $finder, $uploaderFactory
         );
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage("No CSV file found in");
 
-        $importer->import($zipPath, $type);
+        $importer->import($zipFile, $type);
     }
 
     public function testImportThrowsWhenExtractFails()
     {
-        $zipPath = "/tmp/file.zip";
         $type = "cms_page";
         $varDir = "/path/to/var";
-        $baseName = "file";
-        $importDir = $varDir . "/import/" . $baseName;
+        $importDir = $varDir . "/import/" . $type;
+        $zipFile = [
+            "name" => "cms_page_11_export.zip",
+            "full_path" => "cms_page_11_export.zip",
+            "type" => "application/zip",
+            "tmp_name" => "/tmp/phptBElPq",
+            "error" => 0,
+            "size" => 812
+        ];
 
         $directoryList = $this->directoryList;
         $directoryList->method("getPath")->willReturn($varDir);
 
-        $ioFile = $this->ioFile;
-        $ioFile->method("fileExists")->willReturn(false);
-        $ioFile->expects($this->once())->method("mkdir")->with($importDir, 0755);
-
         $archive = $this->zip;
         $archive->method("unpack")->willThrowException(new \Exception("BAD ZIP"));
+
+        $ioFile = $this->ioFile;
 
         $finder = $this->finderInterface;
         $csvReader = $this->reader;
@@ -160,14 +194,19 @@ class ImporterTest extends TestCase
         $media = $this->media;
         $config = $this->config;
 
+        $uploaderFactory = $this->uploader;
+        $uploaderInstance = $this->uploaderInstance;
+        $uploaderFactory->method('create')->willReturn($uploaderInstance);
+        $uploaderInstance->method('save')->willReturn($zipFile);
+
         $importer = new Importer(
             $entityProcessor, $csvReader, $directoryList, $media,
-            $ioFile, $config, $archive, $finder
+            $ioFile, $config, $archive, $finder, $uploaderFactory
         );
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage("Failed to extract archive: BAD ZIP");
 
-        $importer->import($zipPath, $type);
+        $importer->import($zipFile, $type);
     }
 }

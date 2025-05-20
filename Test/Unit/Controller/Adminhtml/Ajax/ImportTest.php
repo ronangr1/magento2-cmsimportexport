@@ -63,16 +63,23 @@ class ImportTest extends TestCase
 
     public function testExecuteImportSuccess()
     {
-        $params = ["entity_type" => "page"];
-        $fileArray = ["tmp_name" => "/tmp/file.zip"];
+        $params = ["entity_type" => "cms_page"];
+        $fileArray = [
+            "name" => "cms_page_11_export.zip",
+            "full_path" => "cms_page_11_export.zip",
+            "type" => "application/zip",
+            "tmp_name" => "/tmp/phptBElPq",
+            "error" => 0,
+            "size" => 812
+        ];
 
         $this->requestMock->method("getParams")->willReturn($params);
         $this->requestMock->method("getFiles")->with("import_file")->willReturn($fileArray);
-        $this->requestMock->method("getParam")->with("entity_type")->willReturn("page");
+        $this->requestMock->method("getParam")->with("entity_type")->willReturn("cms_page");
 
         $this->importerMock->expects($this->once())
             ->method("import")
-            ->with("/tmp/file.zip", "page");
+            ->with($fileArray, "cms_page");
 
         $this->jsonResultMock->expects($this->once())
             ->method("setData")
@@ -93,11 +100,18 @@ class ImportTest extends TestCase
     public function testExecuteImportThrowsException()
     {
         $params = ["entity_type" => "cms_page"];
-        $fileArray = ["tmp_name" => "/tmp/file.zip"];
+        $fileArray = [
+            "name" => "cms_page_11_export.zip",
+            "full_path" => "cms_page_11_export.zip",
+            "type" => "application/zip",
+            "tmp_name" => "/tmp/phptBElPq",
+            "error" => 0,
+            "size" => 812
+        ];
 
         $this->requestMock->method("getParams")->willReturn($params);
         $this->requestMock->method("getFiles")->with("import_file")->willReturn($fileArray);
-        $this->requestMock->method("getParam")->with("entity_type")->willReturn("page");
+        $this->requestMock->method("getParam")->with("entity_type")->willReturn("cms_page");
 
         $this->importerMock->method("import")
             ->will($this->throwException(new \Exception("dummy error")));
