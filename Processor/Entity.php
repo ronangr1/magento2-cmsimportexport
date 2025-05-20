@@ -120,15 +120,15 @@ class Entity
 
                     return $block;
                 },
-                
+
                 "fields" => [
                     "id" => "setId",
                     "title" => "setTitle",
                     "identifier" => "setIdentifier",
-                    "is_active" => "setIsActive",
                     "content" => "setContent",
                     "creation_time" => "setCreationTime",
                     "update_time" => "setUpdateTime",
+                    "is_active" => "setIsActive",
                 ],
                 "saver" => function ($entity) {
                     $this->blockRepository->save($entity);

@@ -54,10 +54,10 @@ class Exporter implements ExporterInterface
                     "getId",
                     "getTitle",
                     "getIdentifier",
-                    "isActive",
                     "getContent",
                     "getCreationTime",
-                    "getUpdateTime"
+                    "getUpdateTime",
+                    "isActive",
                 ],
             ],
         ];
