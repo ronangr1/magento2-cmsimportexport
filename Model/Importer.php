@@ -9,6 +9,7 @@ namespace Ronangr1\CmsImportExport\Model;
 
 use Magento\Framework\App\Filesystem\DirectoryList;
 use Magento\Framework\Archive\ArchiveInterface;
+use Magento\Framework\File\UploaderFactory;
 use Magento\Framework\Filesystem\Io\File as IoFile;
 use Ronangr1\CmsImportExport\Api\ImporterInterface;
 use Ronangr1\CmsImportExport\Processor\Csv\FinderInterface;
@@ -28,32 +29,27 @@ class Importer implements ImporterInterface
         private readonly Config $config,
         private readonly ArchiveInterface $zip,
         private readonly FinderInterface $csvFinder,
+        private readonly UploaderFactory $uploaderFactory,
     )
     {
     }
 
-    /**
-     * @throws \Magento\Framework\Exception\FileSystemException
-     */
-    public function import(string $zipFilePath, string $type): void
+    public function import(array $zipFile, string $type): void
     {
-        $varDir = $this->directoryList->getPath(DirectoryList::VAR_DIR);
-        $baseName = pathinfo($zipFilePath, PATHINFO_FILENAME);
-        $importDir = $varDir . "/import/" . $baseName;
-        if ($this->ioFile->fileExists($importDir, false)) {
-            $this->ioFile->rmdir($importDir, true);
-        }
-        $this->ioFile->mkdir($importDir, 0755);
-
         try {
-            $this->zip->unpack($zipFilePath, $importDir);
+            $varDir = $this->directoryList->getPath(DirectoryList::VAR_DIR);
+            $importDir = $varDir . "/import/" . $type;
+            $uploader = $this->uploaderFactory->create(['fileId' => 'import_file']);
+            $uploader->save($importDir);
+            $filePath = $importDir . '/' . $zipFile['full_path'];
+            $this->zip->unpack($filePath, $importDir);
         } catch (\Exception $e) {
             throw new \RuntimeException(sprintf("Failed to extract archive: %s", $e->getMessage()));
         }
 
         $csvFiles = $this->csvFinder->findCsvFiles($importDir);
         if (empty($csvFiles)) {
-            throw new \RuntimeException(sprintf("No CSV file found in '%s'.", $zipFilePath));
+            throw new \RuntimeException(sprintf("No CSV file found in '%s'.", $zipFile['full_path']));
         }
         $csvPath = reset($csvFiles);
 

@@ -38,8 +38,7 @@ class Import extends Action
 
         try {
             $zipFile = $this->getRequest()->getFiles("import_file");
-            $zipFilePath = $zipFile["tmp_name"];
-            $this->importer->import($zipFilePath, $this->getRequest()->getParam("entity_type"));
+            $this->importer->import($zipFile, $this->getRequest()->getParam("entity_type"));
 
             $result->setData([
                 "success" => true,

@@ -9,5 +9,5 @@ namespace Ronangr1\CmsImportExport\Api;
 
 interface ImporterInterface
 {
-    public function import(string $zipFilePath, string $type): void;
+    public function import(array $zipFile, string $type): void;
 }
