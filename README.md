@@ -29,6 +29,8 @@ This module is compatible with the latest Magento version (2.4.8).
 
 ```
 bin/magento setup:upgrade
+bin/magento setup:di:compile
+bin/magento setup:static-content:deploy -f --area="adminhtml"
 ```
 
 ## Documentation
