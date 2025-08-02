@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright © Ronangr1 All rights reserved.
+ * Copyright © Ronangr1. All rights reserved.
  * See LICENCE file for license details.
  */
 
