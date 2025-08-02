@@ -1,15 +1,12 @@
 <?xml version="1.0"?>
 <!--
 /**
- * Copyright © Ronangr1 All rights reserved.
+ * Copyright © Ronangr1. All rights reserved.
  * See LICENCE file for license details.
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
-        <tab id="ronangr1" sortOrder="999" translate="label">
-            <label>Ronangr1</label>
-        </tab>
         <section id="cmsimportexport" showInDefault="1" showInStore="1" showInWebsite="1" sortOrder="10" translate="label">
             <label>Cms Import Export</label>
             <tab>ronangr1</tab>
