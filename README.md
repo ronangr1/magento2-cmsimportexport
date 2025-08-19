@@ -1,7 +1,7 @@
 # Module for Magento 2
 
 [![Latest Stable Version](https://img.shields.io/packagist/v/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport)
-[![License: MIT](https://img.shields.io/github/license/ronangr1/m2-cmsimportexport.svg?style=flat-square)](./LICENSE)
+[![License: MIT](https://img.shields.io/github/license/ronangr1/magento2-cmsimportexport.svg?style=flat-square)](./LICENSE)
 [![Packagist](https://img.shields.io/packagist/dt/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 [![Packagist](https://img.shields.io/packagist/dm/ronangr1/module-cmsimportexport.svg?style=flat-square)](https://packagist.org/packages/ronangr1/module-cmsimportexport/stats)
 
@@ -41,12 +41,12 @@ You can choose to export media by setting configuration in `Store > Configuratio
 
 ## Support
 
-Raise a new [request](https://github.com/ronangr1/m2-cmsimportexport/issues) to the issue tracker.
+Raise a new [request](https://github.com/ronangr1/magento2-cmsimportexport/issues) to the issue tracker.
 
 ## Authors
 
 - **ronangr1** - *Maintainer* - [![GitHub followers](https://img.shields.io/github/followers/ronangr1.svg?style=social)](https://github.com/ronangr1)
-- **Contributors** - *Contributor* - [![GitHub contributors](https://img.shields.io/github/contributors/ronangr1/m2-cmsimportexport.svg?style=flat-square)](https://github.com/ronangr1/m2-cmsimportexport/graphs/contributors)
+- **Contributors** - *Contributor* - [![GitHub contributors](https://img.shields.io/github/contributors/ronangr1/magento2-cmsimportexport.svg?style=flat-square)](https://github.com/ronangr1/magento2-cmsimportexport/graphs/contributors)
 
 ## License
 
